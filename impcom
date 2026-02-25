@@ -1,0 +1,359 @@
+# find . -type f -mtime +760 -exec rm -rvf {} \; (Remove files older than 760 days)
+# iptables -A INPUT -s 59.47.0.149 -j DROP (Block IP in firewall)
+# ldapsearch -x -h themis.cleartrip.com -D "cn=netfs cleartrip,ou=Users,dc=cleartrip,dc=com" -b dc=com -w cltp123netfs mail=monika*
+# fsck.ext4 -v -y /dev/sda1
+
+In vmlinuz change ro with rw init=/sysroot/bin/sh and press ctrl+x to boot in single user mode. After that; do chroot /sysroot to load the filesystem.
+=====================================================================================================================|
+x0vncserver -PasswordFile=.vnc/passwd -AlwaysShared=1 (To share current screen to VNC users)
+cp /lib/systemd/system/vncserver@.service /etc/systemd/system/vncserver@.service
+
+vim /etc/systemd/system/vncserver@.service
+[Service]
+Type=forking
+# Clean any existing files in /tmp/.X11-unix environment
+ExecStartPre=/bin/sh -c '/usr/bin/vncserver -kill %i > /dev/null 2>&1 || :'
+ExecStart=/sbin/runuser -l mohit.solanki -c "/usr/bin/vncserver %i -geometry 1024x768"
+PIDFile=/home/mohit.solanki/.vnc/%H%i.pid
+ExecStop=/bin/sh -c '/usr/bin/vncserver -kill %i > /dev/null 2>&1 || :'
+pssh -x '-t -t' -h all.ip -O UserKnownHostsFile=/dev/null -O StrictHostKeyChecking=no -l cleartrip -t 35 -i 'sudo service tomcat7 restart'
+for i in `cat all.ip`;  do echo $i ;ssh -q '-t' cleartrip@$i sudo service httpd stop; done
+=====================================================================================================================|
+
+# iptables -A INPUT -s 202.87.51.226/32 -i eth0 -p tcp -m tcp --dport 9051 -j ACCEPT
+# iptables -A INPUT -s 115.114.17.166/32 -i eth0 -p tcp -m tcp --dport 9051 -j ACCEPT
+# iptables -A INPUT -s 115.114.17.142/32 -i eth0 -p tcp -m tcp --dport 9051 -j ACCEPT
+# iptables -A INPUT -s 182.71.249.2/32 -i eth0 -p tcp -m tcp --dport 9051 -j ACCEPT
+# iptables -A INPUT -s 14.141.162.161/32 -i eth0 -p tcp -m tcp --dport 9051 -j ACCEPT
+# iptables -A INPUT -p tcp -s 0.0.0.0/0 --dport 9051 -j DROP
+
+# for i in `cat fail-ips-other.txt`; do ssh cleartrip@$i netstat -ntlpu |awk -F":" '{print $2}' | cut -d ' ' -f1>open-ports/$i.txt; done
+
+# vgchange -ay (For rescan the VG)
+# find . -type d -n $i -exec du -sh * {} \;
+# for i in `cat /root/diff.txt`; do du -sh $i; done
+# for i in `cat /root/diff.txt`; do tar -cvf $i.tar ./*/$i; done
+# for i in `cat diff.txt`; do ldapsearch -h themis.cleartrip.com -D "cn=Mohit Solanki,ou=Users,dc=cleartrip,dc=com" -b dc=cleartrip,dc=com -w cleartrip mail=$i; done
+# xrandr --addmode DP1 1024x768
+# xrandr --output DP1 --mode 1024x768
+# grep -r -l "foo" /path/to/dir/*.c
+# tcpdump -vv -x -X -s 1500 -i eth1 'port 25'
+# tcpdump -ni bond0 host 10.10.12.34 -vvvs0 -w /tmp/mohit.cap
+# ldapsearch -h themis -D "cn=netfs cleartrip,ou=users,dc=cleartrip,dc=com" -w 'cltp123netfs' -b "ou=maillists,dc=cleartrip,dc=com" -LLL -s children -x|less
+# ldappasswd -h localhost -D "cn=raja nair,ou=users,dc=cleartrip,dc=com" -W "cn=Vaibhav Jain,ou=Users,dc=cleartrip,dc=com"  -S
+# free && sync && echo 3 > /proc/sys/vm/drop_caches && free
+# rpm -qal |grep excel
+# cat /var/log/vsftpd.log |grep "cleartrip.com" |awk -F"USER" '{print $2}' | awk -F"@" '{print $1}' |sort -u | sed '/^$/d'
+# openssl rsa -in wc.cleartrip.com-2017.cer -out wc.cleartrip.com.cer (Remove passphrase)
+# openssl rsa -check -in /etc/ssl/certs/wc.cleartrip.com-2017.cer (Check SSL certificate)
+# nmap -v -sn 172.16.56.0/24
+# gpg --with-fingerprint RPM-GPG-KEY-CentOS-7 (Get GPG key fingerprint)
+# mount -t iso9660 -p loop CentOS-6.4-x86_64-bin-DVD1.iso /mnt/ (Mount DVD)
+# rpm -Uvh glibc-common-2.12-1.80.el6.x86_64.rpm glibc-2.12-1.80.el6.x86_64.rpm glibc-headers-2.12-1.80.el6.x86_64.rpm glibc-devel-2.12-1.80.el6.x86_64.rpm krb5-libs-1.9-33.el6.x86_64.rpm openssl-1.0.0-20.el6_2.5.x86_64.rpm krb5-workstation-1.9-33.el6.x86_64.rpm --oldpackage
+# /var/ossec/bin/agent-auth -m 172.16.13.57 -p 1515
+# ffmpeg -i input.mkv -c copy -map 0 -segment_time 3000 -f segment output%03d.mkv
+=======================================================================================================================|
+# mtx status (Tape status)
+# mtx load 34 0/1 (Load tape in drive 0/1 from slot 34)
+# mtx unload 34 0/1 (Unload tape from drive 0/1 to slot 34)
+# mtx eepos 0 transfer 11 36 (Tranfer tape from slot 11 to 36)
+# mt -f /dev/IBMtape1/0 erase (Earse tape in drive 0/1)
+=======================================================================================================================|
+#!/bin/bash
+qlimit_local=100;
+qlimit_remote=100;
+notifyemail=mohit.solanki@cleartrip.com;
+
+get_data() {
+count_remote=`/usr/local/qmhandle-1.3.2/qmHandle -R | grep "Total messages" | awk -F ":" '{print $2}' | sed 's/ //g'`;
+count_local=`/usr/local/qmhandle-1.3.2/qmHandle -L | grep "Total messages" | awk -F ":" '{print $2}' | sed 's/ //g'`;
+}
+
+send_mail(){
+
+mail -s 'Mailqueue limit exceeding on hermes.cleartrip.com' $notifyemail<<EOF
+Dear ServerAdmin,
+
+This is $HOSTNAME.
+We have $count_local mails in local mailqueue.
+We have $count_remote mails in remote mailqueue.
+
+Regards,
+Mohit S. | Infrastructure
+EOF
+
+}
+
+get_data
+if [ $count_remote -ge $qlimit_remote ] || [ $count_local -ge $qlimit_local ]; then
+	sleep 60
+        get_data
+        if [ $count_remote -ge $qlimit_remote ] || [ $count_local -ge $qlimit_local ]; then
+        send_mail	
+        fi
+fi
+=======================================================================================================================|
+#!/bin/bash
+
+SLEEP=5
+flag=0
+DHOME="/home"
+SCRIPT="/root/dirmake.sh"
+WORD=mailMessageStore
+# Reads vsftpd logs (will override defaults above)
+
+DIR=`/usr/bin/cat /var/log/vsftpd.log |grep "cleartrip.com" |awk -F"USER" '{print $2}' |sort -u | cut -d' ' -f2 | sed '/^$/d' | sed s'/.$//'`;
+for i in $DIR
+do
+if `/usr/bin/ldapsearch -h themis.cleartrip.com -D "cn=netfs cleartrip,ou=Users,dc=cleartrip,dc=com" -b "dc=cleartrip,dc=com" -w cltp123netfs uid=$i | grep -q "$WORD"`;
+then
+flag=1
+echo "$i Available in LDAP, Looking for HomeDirectory"
+else
+echo "$i Account not availabe in LDAP, no action"
+fi
+
+#if [ ! -d "$DHOME/$i" ]; then
+if [ $flag -eq 1 ]; then
+if [ ! -d "$DHOME/$i" ]; then
+   mkdir -p "$DHOME/$i"
+   chown -R vsftpd:vsftpd $DHOME/$i
+else
+   echo "HomeDirectory $DHOME/$i exists, no action"
+fi
+fi
+done
+sleep $SLEEP
+
+exec $
+=======================================================================================================================|
+#!/bin/bash
+source $HOME/.bash_profile
+BASEDIR=$(dirname $0)
+BASE_URL=http://agni.cleartrip.com/svn/repos/ct_source
+echo $BASEDIR
+notifyemail=mohit.solanki@cleartrip.com,santhosh.b@cleartrip.com,release@cleartrip.com
+LATEST=`svn list http://agni.cleartrip.com/svn/repos/ct_source/branches/RELEASE |sort -V | tail -n 1 | cut -c -5`
+REL_URL=$BASE_URL/branches/RELEASE/$LATEST/ui/ct-jsps/commonui/resources
+TRUNK_URL=$BASE_URL/trunk/ui/ct-jsps/commonui/resources
+
+function error_handle(){
+                if [ $1 -ne 0 ];then
+                   	echo "expedia resource update Build problem" > $BASEDIR/build.log
+                   	echo "expedia resource update Build problem"
+			emailid="santhosh.b@cleartrip.com"
+			NOW="`date +%Y-%m-%d` `date +%H:%M`"
+			msg="expedia resources copy @ $NOW failed "
+			mutt -s "$msg from $(hostname | tr 'a-z' 'A-Z')" -a /tmp/expediaHtmlGrab.log $notifyemail < $BASEDIR/build.log
+                   exit 1
+                fi
+}
+
+function expedia_commit(){
+
+date > /tmp/expediaHtmlGrab.log
+
+rm -rvf $BASEDIR/resources
+
+svn co $1 --username=hudson.svn --password=hud123
+cd $BASEDIR
+
+node ./expediaHtmlGrab.js
+error_handle $?
+
+cp -v ./header.jsp $BASEDIR/resources/header/expedia/header.jsp
+error_handle $?
+
+cp -v ./footer.jsp $BASEDIR/resources/footer/expedia/footer.jsp
+error_handle $?
+
+cd $BASEDIR/resources
+
+svn ci -m "committing the latest expedia jsps for DRI-11250" --username=hudson.svn --password=hud123 --no-auth-cache
+error_handle $?
+
+cd -
+}
+
+expedia_commit $REL_URL
+
+sleep 30
+
+expedia_commit $TRUNK_URL
+=======================================================================================================================|
+#mysql
+mysql> create database wordpress;
+mysql> use wordpress;
+mysql> CREATE USER 'wordpress'@'%';
+mysql> GRANT ALL PRIVILEGES ON wordpress.* TO 'wordpress'@'localhost' identified by 'Admin@123';
+mysql> FLUSH PRIVILEGES;
+mysql> quit
+
+# mysql -u wordpress -p
+Enter password: Admin@123
+
+mysql>
+=======================================================================================================================|
+TigerVNC
+# yum -y groupinstall "Desktop"
+# yum -y groupinstall "General Purpose Desktop"
+# yum -y install xorg-x11-fonts-misc tigervnc tigervnc-server
+# useradd user1
+# useradd user2
+# vim /etc/sysconfig/vncservers
+VNCSERVERS="1:user1 2:user2"
+VNCSERVERARGS[1]="-geometry 800x600"
+VNCSERVERARGS[2]="-geometry 1024x768"
+:wq
+
+(Centos7)
+# yum groupinstall "GNOME Desktop"
+# yum install tigervnc-server
+# cp /lib/systemd/system/vncserver@.service /etc/systemd/system/vncserver@:1.service
+# vi /etc/systemd/system/vncserver@:1.service
+
+
+# su - user1
+$ vncpasswd
+Password:
+Verify:
+
+# su - user2
+$ vncpasswd
+Password:
+Verify:
+
+===For root===
+
+$ sudo su
+# vncpasswd
+Password:
+Verify:
+
+add this line:
+"/usr/bin/vncserver"
+in the /etc/rc.local file to enable root for vnc access.
+
+# service vncserver start
+# chkconfig vncserver on
+
+[OPEN PORT 5901]
+
+If it stil fail, remove /tmp/.X*
+
+=======================================================================================================================|
+#!/bin/bash
+
+DATE=`date -d "-1 days" +"%e%b%Y"| cut -d' ' -f2`
+TODAY=`date +%e%b%Y | cut -d' ' -f2`
+notifyemail=mohit.solanki@cleartrip.com
+LABEL=LS6452L4
+DEVICE=/dev/IBMtape1
+NEW=cvf
+OLD=rvf
+SLOT=`/usr/sbin/mtx status |grep $LABEL | awk -F"Element " '{print $2}' | cut -c 1-2`
+
+mtx load $SLOT $DEVICE
+echo "Tape $LABEL loaded to device $DEVICE" > /script/logs/${LABEL}-DRI-4946_$TODAY.log 2>&1
+
+echo "=============================================" > /script/logs/${LABEL}-DRI-4946_$TODAY.log 2>&1
+/bin/date >> /script/logs/${LABEL}-DRI-4946_$TODAY.log 2>&1
+echo "=============================================" > /script/logs/${LABEL}-DRI-4946_$TODAY.log 2>&1
+
+#/bin/tar $NEW $DEVICE /oradb3-oracle-bkp/expdpdump/searchdbfullexp_$DATE.dmp.gz /oradb4-oracle-bkp/expdpdump/expdpfullparallel/cleardbfullexp$DATE.zip /oradb4-oracle-bkp/expdpdump/expdpfullparallel/cleardbfullexp_$DATE.log >> /script/logs/${LABEL}-DRI-4946_$TODAY.log 2>&1
+
+/bin/tar $OLD $DEVICE /oradb3-oracle-bkp/RMANBKP  >> /script/logs/${LABEL}-DRI-4946_$TODAY.log 2>&1
+
+echo "=============================================" > /script/logs/${LABEL}-DRI-4946_$TODAY.log 2>&1
+/bin/date >> /script/logs/${LABEL}-DRI-4946_$TODAY.log 2>&1
+echo "=============================================" > /script/logs/${LABEL}-DRI-4946_$TODAY.log 2>&1
+
+mtx unload $SLOT $DEVICE
+echo "Tape $LABEL unloaded to slot $SLOT" >> /script/logs/${LABEL}-DRI-4946_$TODAY.log 2>&1
+
+echo "Tape $LABEL at slot $SLOT having Oracle data taken on $TODAY" >> /script/inventory.txt
+
+mutt -s "TAPE BACKUP REPORT $(hostname | tr 'a-z' 'A-Z')" -a /script/logs/${LABEL}-DRI-4946_$TODAY.log 2>&1 $notifyemail < /script/msg.txt
+=======================================================================================================================|
+#!/bin/bash
+CURRENT=$(df -h / | grep / | awk '{ print $4}' | sed 's/%//g')
+THRESHOLD=80
+notifyemail=mohit.solanki@cleartrip.com,noc@cleartrip.com,santhosh.b@cleartrip.com
+
+if [ "$CURRENT" -gt "$THRESHOLD" ] ; then
+	mutt -s "Disk Space Alert from $(hostname | tr 'a-z' 'A-Z')" $notifyemail << EOF
+Your root partition remaining free space is critically low. 
+
+Used:$CURRENT%
+EOF
+fi
+=======================================================================================================================|
+apache_reload(){
+        if sudo service httpd configtest > /dev/null 2>&1; then
+                # if the config is ok than we just reload normaly
+                sudo service httpd reload 2>&1 | grep -v 'not running' >&2 || true
+        else
+                # if we are here something is broken and we need to try
+                # to exit as nice and clean as possible
+                PID=$(pidof httpd) || true
+                echo -e "PID $PID Alive, Apache Config Test Failed !! Exiting.."
+                exit 1
+        fi
+}
+=======================================================================================================================|
+Restart Book App
+
+$ ps -ef | grep book-* | grep release3 |grep -v payment
+sudo /sbin/service tomcat7 book-1 release3 stop ; sudo /sbin/service tomcat7 book-2 release3 stop ; sudo /sbin/service tomcat7 book-dp release3 stop
+sudo /sbin/service tomcat7 book-1 release3 start ; sudo /sbin/service tomcat7 book-2 release3 start ; sudo /sbin/service tomcat7 book-dp release3 start
+=======================================================================================================================|
+pssh -x '-t -t' -h all.ip -O UserKnownHostsFile=/dev/null -O StrictHostKeyChecking=no -l cleartrip -t 35 -i "echo ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAtIxROEAeJ2QTM3m0YrYgP8Km1KjJ+Zic75MgEbL0DVfoHD9nGi9X0VtKUDAM3EX/huMkB9cZtSfyDln9jeP9BmR3OX7lLanzBV+X9YqEMPdFS3iLFRNlogPh6o2rn5z484JDrduAurmiJQEli6bVmQJV8BJIto9xcrni5W6d4n9JJG+Yw/omNJ8eI+Vz/NNevlvbLSmh6l9ATZItjAzvgKZyHj/fWV2FIXgG9zWux7kJUdfxjRzdpCuHcRU20gbqKJvSVy2iO9a7vO1pkxIndIuJslAgMwHV5W8Vm69Ql092XCqouxySXoPlcDtQuA3sQpgtCiznSX2gFfAOfnEK7w== go@d1c1-deploy-1.cltp.com >> /home/cleartrip/.ssh/authorized_keys"
+
+pssh -x '-t -t' -h all.ip -O UserKnownHostsFile=/dev/null -O StrictHostKeyChecking=no -l cleartrip -t 35 -i "echo ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAylWWS6TkA/q2L47STVsqs5fy9VnLoPCCSRl0bbPyzrti6rhVVcAq87kbfqDhXkC2N0Mu0iXdPEN+hytNs/aaNLUNEBGOPzPobI32uCJ2Gp8PyDwwY1ES8UFQKdpf5GlVIF7vZRQB/e9CiRjn9nR297TpmgHyZke864sFH9f/soUZElDkMHNO7A9XySpo5IobFYNvb/CQQEU3+YTt3y1zJzzSuHEE7QmOobJ1lbm5N4E73CgnGlYqk22UzKXwdgKv7EjXadlbvPd4tldLoaxYcj9UjINi9K+iMAFJ8duizITH/oHwHcVWtP5WqbujyQVPPZych3qveCIljxDqDW5ERw== go@d1c1-deploy-2.cltp.com >> /home/cleartrip/.ssh/authorized_keys"
+
+pssh -x '-t -t' -h all.ip -O UserKnownHostsFile=/dev/null -O StrictHostKeyChecking=no -l cleartrip -t 35 -i "echo ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA61vgEVB3T7aYEvgd9Vi5DJC0sBNVLp66CMS5qd9wQvViGdDrNM/ggOZaMKcMsNbXU+rfxBgL9aDHCISlPWRUB30O37kXyRtk70jgMChebXqYOMbDcsZj1Rvahgkxz8YTfCsqOI1YPu7lwqMWEnGPvAnHk0XFlTEPoyjpSAYsOIBi5IkwruhFgNkBGDNWb3mRPG9oq+MWR99nk/Cp7Q639z22zdAFi+1rFIpXY+EBJ7QHyXk3H42aQMOxmmwpcFk8wTAWFzhplCxKZ6+tac4iHsezakDSCOFNJdpWUZwRLWUq8E412H7TeFXHUS9zGo/gPaxfpjxHf/MJwSZFG+60uw== go@d1c2-deploy-2.cltp.com >> /home/cleartrip/.ssh/authorized_keys"
+
+=======================================================================================================================|
+lvcreate -l 60%VG -n mylv testvg
+lvcreate -l 100%FREE -n yourlv testvg
+catalina.sh jpda start
+=======================================================================================================================|
+ssh root@172.22.15.110
+MariaDB [renaming]> use renaming;
+MariaDB [renaming]> select * from ip_table;
+MariaDB [renaming]> delete from ip_table where ip="172.17.8.157";
+
+$ cd deploy/app_ip
+$ bash newip.sh
+
+ssh root@salt-master
+MUMroot@d1c1-salt-master-1:# cd /root/renaming
+MUMroot@d1c1-salt-master-1:# python app_ip.py
+
+ssh root@VM
+# salt-call state.sls dc_rename
+# salt-call state.sls hostnamesh
+
+# cd /srv/salt/base/ssh
+# vim cleartripauth 
+# vim rootauth 
+# salt mumr1-* state.sls ssh
+# salt mumr3-* state.sls ssh
+
+sed -i 's/release: release3/release: release1/g' /etc/metadata.yml
+sed -i 's/srel: r3/srel: r1/g' /etc/metadata.yml
+for i in `cat test2`; do ssh -qt root@$i "sed -i 's/release: release3/release: release1/g' /etc/metadata.yml" ; done
+for i in `cat test2`; do ssh -qt root@$i "sed -i 's/srel: r3/srel: r1/g' /etc/metadata.yml" ; done
+pssh -h test2 -O UserKnownHostsFile=/dev/null -O StrictHostKeyChecking=no -l root -i -x '-t -t' -t 300 "salt-call state.highstate"
+pssh -h test2 -O UserKnownHostsFile=/dev/null -O StrictHostKeyChecking=no -l root -i -x '-t -t' -t 300 "sudo service tomcat7 restart"
+=======================================================================================================================|
+# sed -i '1650d' /home/cleartrip/.ssh/known_hosts
+=======================================================================================================================|
+# for b in `ls`; do for i in `cat $b`; do touch ~/deploy/mohit/mem/$b.txt; ssh -q '-t' cleartrip@$i "hostname ; hostname -I; free -m | grep Mem:" >> ~/deploy/mohit/mem/$b.txt ; done ; done
+# xfs_growfs /dev/centos/root -D 20579328
+# python /usr/local/infra/scribeclient/src/scribeclientdaemon.py start ; sleep 1;  python /usr/local/infra/scribeclient/src/logit.py start
+# dd if=/dev/zero bs=1M count=5 | nc -vvn 172.22.20.43 9092
+# dd if=/dev/zero of=file.txt count=1024 bs=1M
+# rsync -rv --exclude-from='../ex' * ../GB_Bak/
+# ip route add 10.0.0.0/8 via 10.225.53.1 dev em1
+# ip route del default via 10.225.53.1
